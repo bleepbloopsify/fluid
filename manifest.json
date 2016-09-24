@@ -3,6 +3,12 @@
   "name":"flUId",
   "version":"1.0.0",
   "description":"",
+  "permissions":[
+    "contextMenus"
+  ],
+  "background":{
+    "scripts":[]
+  },
   "content_scripts":[
     {
       "matches":["<all_urls>"],
