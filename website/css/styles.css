@@ -55,6 +55,17 @@ body {
   border-bottom-style: hidden;
   margin-right: -5px; }
 
+#delete {
+  display: inline-block;
+  float: right;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 4px;
+  background-color: #FF0000;
+  color: #FFFFFF;
+  padding: 5px;
+  margin-top: -5px; }
+
 #menu {
   margin-left: 0px;
   border-bottom-style: solid;
