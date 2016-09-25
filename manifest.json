@@ -16,5 +16,10 @@
       "css":["third_party/jquery-ui.min.css", "css/fluid.css"],
       "js":["third_party/jquery.min.js", "third_party/jquery-ui.min.js","js/context-menu.js", "js/fluid.js", "js/selector.js"]
     }
-  ]
+  ],
+  "options_ui":{
+    "page": "./website/index.html",
+    "chrome_style": true,
+    "open_in_tab":true
+  }
 }

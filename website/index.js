@@ -3,41 +3,17 @@ var curr;
 var pop = document.getElementById('popup');
 var container = document.getElementById('container');
 var body = document.getElementById('body');
-// var settings = chrome.storage.sync
-var settings = {
-  'www.reddit.com/r/all': {
-    'tree': {
-      '[0,1,1]':{ 'background-color': 'purple' }
-    },
-    'id': {},
-    'class': {
-      'title': { 'color': 'red' }
-    },
-    'tag': {
-      'body': { 'background-color': 'green' }
-    }
+var settings;
+
+var setup = function(){
+  for (let url in settings){
+    var n = document.createElement('div');
+    n.className='boxy';
+    n.setAttribute('name', url);
+    n.innerHTML=url;
+    container.appendChild(n);
+    n.addEventListener('click',open);
   }
-};
-
-var open = function(e){
-  console.log('hi');
-  console.log(container, pop);
-  curr = this;
-  container.style.display = 'None';
-  pop.style.display = 'Block';
-  //add picture, add name; add code, maybe
-  pop.querySelector("#title").innerHTML= curr.getAttribute('name');
-  body.addEventListener('click', close);
-  this.removeEventListener('click',open);
-};
-
-for (let url in settings){
-  var n = document.createElement('div');
-  n.className='boxy';
-  n.setAttribute('name', url);
-  n.innerHTML=url;
-  container.appendChild(n);
-  n.addEventListener('click',open);
 }
 
 var close = function(e){
@@ -55,14 +31,46 @@ var close = function(e){
 };
 
 var remove = function(e){
-  console.log(this);
-  console.log(curr)
-  let rem = document.getElementBy
+  // let rem = document.getElementBy
   curr.parentNode.removeChild(curr);
   close();
   //delete from container
   delete settings[curr.getAttribute('name')];
+  chrome.storage.sync.remove(curr.getAttribute('name'),remove)
 };
+
+chrome.storage.sync.get(null, function(items){
+  console.log('hi', items);
+  settings = items;
+  setup();
+});
+// var settings = {
+//   'www.reddit.com/r/all': {
+//     'tree': {
+//       '[0,1,1]':{ 'background-color': 'purple' }
+//     },
+//     'id': {},
+//     'class': {
+//       'title': { 'color': 'red' }
+//     },
+//     'tag': {
+//       'body': { 'background-color': 'green' }
+//     }
+//   }
+// };
+
+var open = function(e){
+  console.log('hi');
+  console.log(container, pop);
+  curr = this;
+  container.style.display = 'None';
+  pop.style.display = 'Block';
+  //add picture, add name; add code, maybe
+  pop.querySelector("#title").innerHTML= curr.getAttribute('name');
+  body.addEventListener('click', close);
+  this.removeEventListener('click',open);
+};
+
 
 document.getElementById('click').addEventListener('click',open);
 document.getElementById('delete').addEventListener('click',remove);
