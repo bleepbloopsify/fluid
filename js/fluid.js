@@ -1,9 +1,11 @@
 console.log( 'working' );
 
+console.log( chrome );
+
 var settings = {
   'www.reddit.com/r/all': {
     'tree': [ {
-      'path': [],
+      'path': [ 0, 1, 4 ],
       'properties': { 'background-color': 'purple' }
     } ],
     'id': {},
@@ -17,7 +19,6 @@ var settings = {
 };
 
 var url = window.location.hostname + window.location.pathname;
-console.log( url );
 
 function styleElement( element, styles ) {
   for ( var attr in styles ) {
@@ -47,8 +48,8 @@ if ( url in settings ) {
   }
   for ( name in tree ) {
     var curr = document;
-    for ( var path in tree[ name ][ 'path' ] ) {
-      curr = curr.children()[ path ];
+    for ( var path_index in tree[ name ][ 'path' ] ) {
+      curr = curr.children[ tree[ name ][ 'path' ][ path_index ] ];
     }
     styleElement( curr, tree[ name ][ 'properties' ] );
   }

@@ -1,0 +1,54 @@
+            *{
+                padding: 0px;
+                margin: 0px;
+            }
+            body{
+            width: 510px;
+            } 
+            #source{
+                float: left;
+                width: 250px;
+                height: 1000px;
+                margin: 2px;
+                background-color: #d4d4d4;
+            }
+            .flexcontainer{
+                display:flex;
+            }
+            .item{
+                flex-grow: 1;
+            }
+            input{
+                border: none;
+                background-color: #E3E3E3;
+                margin-left: 40px;
+            }
+            
+            #a{
+                float: right;
+                width: 250px;
+                height: 500px;
+                margin: 0px auto 0px auto;
+                background-color: #d4d4d4;
+                margin: 2px;
+            }
+            
+            #settings{
+
+            }
+            #container{
+
+            }
+            #ids{
+
+            }
+            #classes{
+
+            }
+            #attributes{
+                float:right;
+                width: 250px;
+                height: 500px;
+                background-color: #d4d4d4;
+                margin: 2px;
+            }

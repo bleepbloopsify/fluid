@@ -1,18 +1,19 @@
 {
   "manifest_version":2,
   "name":"flUId",
-  "version":"1.0.0",
+  "version":"1.0.1",
   "description":"",
   "permissions":[
+    "storage",
     "contextMenus"
   ],
   "background":{
-    "scripts":["js/context-menu.js"]
+    "scripts":["background/context-menu.js"]
   },
   "content_scripts":[
     {
       "matches":["<all_urls>"],
-      "js":["js/fluid.js"]
+      "js":["js/context-menu.js", "js/fluid.js", "js/selector.js"]
     }
   ]
 }
