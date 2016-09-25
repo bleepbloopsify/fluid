@@ -3,21 +3,6 @@ var curr;
 var pop = document.getElementById('popup');
 var container = document.getElementById('container');
 var body = document.getElementById('body');
-// var settings = chrome.storage.sync
-var settings = {
-  'www.reddit.com/r/all': {
-    'tree': {
-      '[0,1,1]': { 'background-color': 'purple' }
-    },
-    'id': {},
-    'class': {
-      'title': { 'color': 'red' }
-    },
-    'tag': {
-      'body': { 'background-color': 'green' }
-    }
-  }
-};
 
 var open = function(e) {
   console.log('hi');
@@ -31,14 +16,18 @@ var open = function(e) {
   this.removeEventListener('click', open);
 };
 
-for (let url in settings) {
-  var n = document.createElement('div');
-  n.className = 'boxy';
-  n.setAttribute('name', url);
-  n.innerHTML = url;
-  container.appendChild(n);
-  n.addEventListener('click', open);
-}
+var settings;
+
+var setup = function() {
+  for (let url in settings) {
+    var n = document.createElement('div');
+    n.className = 'boxy';
+    n.setAttribute('name', url);
+    n.innerHTML = url;
+    container.appendChild(n);
+    n.addEventListener('click', open);
+  }
+};
 
 var close = function(e) {
   try {
@@ -46,23 +35,30 @@ var close = function(e) {
       container.style.display = 'block';
       pop.style.display = 'none';
       console.log(pop.style.display);
-      curr.addEventListener('click', open)
-      this.removeEventListener('click', close)
+      curr.addEventListener('click', open);
+      this.removeEventListener('click', close);
     }
   } catch (err) {
     console.error(err);
   }
 };
 
+
 var remove = function(e) {
-  console.log(this);
-  console.log(curr)
-  let rem = document.getElementBy
   curr.parentNode.removeChild(curr);
   close();
   //delete from container
   delete settings[curr.getAttribute('name')];
+  chrome.storage.sync.remove(curr.getAttribute('name'), remove);
 };
+
+document.getElementById('click').addEventListener('click', open);
+document.getElementById('delete').addEventListener('click', remove);
+chrome.storage.sync.get(null, function(items) {
+  console.log('hi', items);
+  settings = items;
+  setup();
+});
 
 document.getElementById('click').addEventListener('click', open);
 document.getElementById('delete').addEventListener('click', remove);
