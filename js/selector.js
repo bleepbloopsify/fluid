@@ -22,13 +22,13 @@ var hover = function(e) {
 function mouseOver(e) {
   for (var x = 0; x < elements.length; x++) {
     elements[x].addEventListener('mouseover', hover);
+    elements[x].addEventListener('click', select_click);
   }
 
   $('fluid').each(function() {
     this.removeEventListener('mouseover', hover);
+    this.removeEventListener('click', select_click);
   });
-
-  document.addEventListener('click', select_click);
 }
 
 function removeMouseOver(e) {
@@ -145,6 +145,7 @@ function select_click(e) {
   element = selected;
   dialog.dialog('close');
   methods.open_dialog();
+
 }
 
 function select_out(e) {

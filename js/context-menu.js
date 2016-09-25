@@ -118,6 +118,7 @@ methods.open_dialog = function() {
       at: 'right center',
       of: window
     },
+    title: 'Fluid',
     close: removeMouseOver
   });
   mouseOver();
@@ -162,8 +163,8 @@ var save = function() {
   dialog_settings.find('#fluid-attrs').each(function() {
     $(this).find('.fluid-property').each(function() {
       let inputs = $(this).children();
-      console.log(inputs);
       attrs[$(inputs[0]).val()] = $(inputs[1]).val();
+      console.log(attrs);
     });
   });
   let path = JSON.stringify(getPath());
