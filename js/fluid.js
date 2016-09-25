@@ -1,12 +1,14 @@
 var url = window.location.hostname + window.location.pathname;
 
 var settings;
+var dialog;
 
 function styleElement(element, styles) {
   console.log(element);
   for (var attr in styles) {
-    console.log(attr + ': ' + styles[attr]);
-    element.style.cssText = attr + ': ' + styles[attr];
+    var style = attr + ': ' + styles[attr] + ';';
+    console.log(style);
+    element.style.cssText += style;
   }
 }
 

@@ -6,7 +6,8 @@
     "globals":{
       "chrome":true,
       "$":true,
-      "settings":true
+      "settings":true,
+      "element":true
     },
     "extends": "eslint:recommended",
     "parserOptions": {

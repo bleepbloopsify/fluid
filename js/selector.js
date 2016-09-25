@@ -142,7 +142,9 @@ function parse(element) {
 
 function select_click(e) {
   e.preventDefault();
-  console.log(parse(selected));
+  element = selected;
+  dialog.dialog('close');
+  methods.open_dialog();
 }
 
 function select_out(e) {
