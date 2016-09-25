@@ -1,0 +1,51 @@
+$font-stack: 'Pacifico', sans-serif;
+$primary-color: #6495ED;
+$primary-font: 'Helvetica',sans-serif;
+
+body{
+  font-family: $primary-font;
+}
+
+.custom-font{
+  font-family: $font-stack;
+  color: $primary-color;
+}
+
+.c{
+  font-family: 'Helvetica', sans-serif;
+  color: $primary-color;
+  padding-left: 10px;
+}
+
+.center-head{
+  text-align: center;
+  margin-bottom: -40px;
+}
+
+.head{
+  font-size: 50px;
+  margin-top: 0px;
+  display: inline-block;
+}
+
+.container{
+  margin: auto;
+  margin-top: 40px;
+  width: 80%;
+  background-color: #f8f8f8;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #808080;
+  border-radius: 5px;
+}
+
+.boxy{
+  list-style-position:inside;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding: 10px;
+}
+
+.container div:last-child{
+  border-bottom: none;
+}
