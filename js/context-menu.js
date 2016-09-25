@@ -12,6 +12,7 @@ var parse;
 
 methods.open_dialog = function() {
   let parsed = parse(element);
+  console.log(parsed);
   // let parsed = {
   //   'ids': {
   //     lol: {

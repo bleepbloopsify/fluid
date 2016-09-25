@@ -24,7 +24,7 @@ for (var x = 0; x < elements.length; x++) {
 document.addEventListener('click', select_click);
 
 function parse(element) {
-  var output = { 'tags': {}, 'classes': {}, 'ids': {} };
+  var output = { 'tags': {}, 'classes': {}, 'ids': {}, 'attrs': {} };
   var classes = element.className.split(' ');
   for (var i = 0; i < classes.length; i++) {
     var style_list = getStyleWithCSSSelector('.' + classes[i]);
@@ -35,7 +35,17 @@ function parse(element) {
         var class_list = split[0].split(' ');
         for (var x = 0; x < class_list.length; x++) {
           if (class_list[x].indexOf(classes[i]) != -1) {
-            output['classes'][class_list[x]] = split[1].replace('}', '').trim();
+            var class_name = class_list[x].trim().replace(',', '');
+            var attrs = split[1].replace('}', '').trim().split(';');
+            if (output['classes'][class_name] == null) {
+              output['classes'][class_name] = {};
+            }
+            for (var b = 0; b < attrs.length; b++) {
+              var attr_split = attrs[b].split(':');
+              if (attr_split[0] != null && attr_split[1] != null) {
+                output['classes'][class_name][attr_split[0].trim()] = attr_split[1].trim();
+              }
+            }
           }
         }
       }
@@ -53,7 +63,17 @@ function parse(element) {
         var id_list = split[0].split(' ');
         for (x = 0; x < id_list.length; x++) {
           if (id_list[x].indexOf(id[i]) != -1) {
-            output['ids'][id_list[x]] = split[1].replace('}', '').trim();
+            var id_name = id_list[x].trim().replace(',', '');
+            attrs = split[1].replace('}', '').trim().split(';');
+            if (output['ids'][id_name] == null) {
+              output['ids'][id_name] = {};
+            }
+            for (b = 0; b < attrs.length; b++) {
+              attr_split = attrs[b].split(':');
+              if (attr_split[0] != null && attr_split[1] != null) {
+                output['ids'][id_name][attr_split[0].trim()] = attr_split[1].trim();
+              }
+            }
           }
         }
       }
@@ -70,13 +90,13 @@ function parse(element) {
       var tag_list = split[0].split(' ');
       for (x = 0; x < tag_list.length; x++) {
         if (tag_list[x].indexOf(tag) != -1) {
-          var attrs = split[1].replace('}', '').trim().split(';');
+          attrs = split[1].replace('}', '').trim().split(';');
           var tag_name = tag_list[x].trim().replace(',', '');
           if (output['tags'][tag_name] == null) {
             output['tags'][tag_name] = {};
           }
-          for (var b = 0; b < attrs.length; b++) {
-            var attr_split = attrs[b].split(':');
+          for (b = 0; b < attrs.length; b++) {
+            attr_split = attrs[b].split(':');
             if (attr_split[0] != null && attr_split[1] != null) {
               output['tags'][tag_name][attr_split[0].trim()] = attr_split[1].trim();
             }
@@ -86,6 +106,21 @@ function parse(element) {
     }
   } else {
     output['tags'][tag] = '';
+  }
+  for (var c in output['classes']) {
+    for (var attribute in output['classes'][c]) {
+      output['attrs'][attribute] = output['classes'][c][attribute];
+    }
+  }
+  for (c in output['ids']) {
+    for (attribute in output['ids'][c]) {
+      output['attrs'][attribute] = output['ids'][c][attribute];
+    }
+  }
+  for (c in output['tags']) {
+    for (attribute in output['tags'][c]) {
+      output['attrs'][attribute] = output['tags'][c][attribute];
+    }
   }
   return output;
 }
