@@ -1,0 +1,18 @@
+{
+  "manifest_version":2,
+  "name":"flUId",
+  "version":"1.0.0",
+  "description":"",
+  "permissions":[
+    "contextMenus"
+  ],
+  "background":{
+    "scripts":["js/context-menu.js"]
+  },
+  "content_scripts":[
+    {
+      "matches":["<all_urls>"],
+      "js":["js/fluid.js"]
+    }
+  ]
+}
