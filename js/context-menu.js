@@ -15,8 +15,6 @@ chrome.storage.sync.get(url, function(items) {
 
 var element = document;
 
-var dialog;
-
 var stylePage;
 var methods = {};
 var parse;
@@ -36,7 +34,7 @@ methods.open_dialog = function() {
   let container = $('<fluid />');
   let classes = $('<fluid class="fluid-classes" />');
   let class_title = $('<label> Classes </label>');
-  let classes_container = $('<fluid class="fluid-classes-container"/>');
+  let classes_container = $('<fluid />');
   class_title.click(toggle(classes_container));
   classes.append(class_title);
   for (let class_name in parsed.classes) {
@@ -57,7 +55,6 @@ methods.open_dialog = function() {
     }
     properties_container.toggle();
     class_container.append(properties_container);
-    classes_container.attr('name', class_name);
     classes_container.append(class_container);
   }
   classes_container.toggle();
@@ -120,8 +117,10 @@ methods.open_dialog = function() {
       my: 'right center',
       at: 'right center',
       of: window
-    }
+    },
+    close: removeMouseOver
   });
+  mouseOver();
   console.log(box);
 };
 
@@ -131,7 +130,7 @@ var save = function() {
   console.log(dialog_settings);
   let classes = {};
   dialog_settings.find('.fluid-classes').each(function() {
-    $(this).find('.fluid-classes-container').each(function() {
+    $(this).find('[name]').each(function() {
       let properties = {};
       $(this).find('.fluid-property').each(function() {
         let inputs = $(this).children();
@@ -141,16 +140,24 @@ var save = function() {
       classes[$(this).attr('name')] = properties;
     });
   });
-  settings.classes = classes;
+  for (let key in classes) {
+    settings.classes[key] = classes[key];
+  }
   let ids = {};
   dialog_settings.find('.fluid-ids').each(function() {
-    $(this).find('.fluid-property').each(function() {
-      let inputs = $(this).children();
-      console.log(inputs);
-      ids[$(inputs[0]).val()] = $(inputs[1]).val();
+    $(this).find('[name]').each(function() {
+      let properties = {};
+      $(this).find('.fluid-property').each(function() {
+        let inputs = $(this).children();
+        console.log(inputs);
+        properties[$(inputs[0]).val()] = $(inputs[1]).val();
+      });
+      ids[$(this).attr('name')] = properties;
     });
   });
-  settings.ids = ids;
+  for (let key in ids) {
+    settings.ids[key] = ids[key];
+  }
   let attrs = {};
   dialog_settings.find('#fluid-attrs').each(function() {
     $(this).find('.fluid-property').each(function() {
@@ -203,6 +210,5 @@ chrome.runtime.onMessage.addListener(function(req) {
 
 // console.log(document);
 document.addEventListener('contextmenu', function(e) {
-  console.log('rightclicked');
   element = e.target;
 });
