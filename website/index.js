@@ -20,6 +20,7 @@ var settings;
 
 var setup = function() {
   for (let url in settings) {
+    console.log(url,settings)
     var n = document.createElement('div');
     n.className = 'boxy';
     n.setAttribute('name', url);
@@ -45,10 +46,16 @@ var close = function(e) {
 
 
 var remove = function(e) {
-  curr.parentNode.removeChild(curr);
+  // var find;
+  // var children = curr.parentNode.childNodes;
+  // children.forEach(function(item){
+  //   console.log('children',children.innerHTML)
+  //   if(children.innerHTML == curr.getAttribute('name')){
+  //     find = children;
+  //   }
+  // });
+  container.removeChild(curr);
   close();
-  //delete from container
-  delete settings[curr.getAttribute('name')];
   chrome.storage.sync.remove(curr.getAttribute('name'), remove);
 };
 
