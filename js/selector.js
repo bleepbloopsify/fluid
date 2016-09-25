@@ -24,7 +24,7 @@ for ( var x = 0; x < elements.length; x++ ) {
 document.addEventListener( 'click', select_click );
 
 function parse( element ) {
-  var output = { 'tag': {}, 'class': {}, 'id': {} };
+  var output = { 'tag': {}, 'class': {}, 'id': {}, 'attr': {} };
   var classes = element.className.split( ' ' );
   for ( var i = 0; i < classes.length; i++ ) {
     var style_list = getStyleWithCSSSelector( '.' + classes[ i ] );
@@ -35,7 +35,17 @@ function parse( element ) {
         var class_list = split[ 0 ].split( ' ' );
         for ( var x = 0; x < class_list.length; x++ ) {
           if ( class_list[ x ].indexOf( classes[ i ] ) != -1 ) {
-            output[ 'class' ][ class_list[ x ] ] = split[ 1 ].replace( '}', '' ).trim();
+            var class_name = class_list[ x ].trim().replace( ',', '' );
+            var attrs = split[ 1 ].replace( '}', '' ).trim().split( ';' );
+            if ( output[ 'class' ][ class_name ] == null ) {
+              output[ 'class' ][ class_name ] = {};
+            }
+            for ( var b = 0; b < attrs.length; b++ ) {
+              var attr_split = attrs[ b ].split( ':' );
+              if ( attr_split[ 0 ] != null && attr_split[ 1 ] != null ) {
+                output[ 'class' ][ class_name ][ attr_split[ 0 ].trim() ] = attr_split[ 1 ].trim();
+              }
+            }
           }
         }
       }
@@ -53,7 +63,17 @@ function parse( element ) {
         var id_list = split[ 0 ].split( ' ' );
         for ( x = 0; x < id_list.length; x++ ) {
           if ( id_list[ x ].indexOf( id[ i ] ) != -1 ) {
-            output[ 'id' ][ id_list[ x ] ] = split[ 1 ].replace( '}', '' ).trim();
+            var id_name = id_list[ x ].trim().replace( ',', '' );
+            attrs = split[ 1 ].replace( '}', '' ).trim().split( ';' );
+            if ( output[ 'id' ][ id_name ] == null ) {
+              output[ 'id' ][ id_name ] = {};
+            }
+            for ( b = 0; b < attrs.length; b++ ) {
+              attr_split = attrs[ b ].split( ':' );
+              if ( attr_split[ 0 ] != null && attr_split[ 1 ] != null ) {
+                output[ 'id' ][ id_name ][ attr_split[ 0 ].trim() ] = attr_split[ 1 ].trim();
+              }
+            }
           }
         }
       }
@@ -70,13 +90,13 @@ function parse( element ) {
       var tag_list = split[ 0 ].split( ' ' );
       for ( x = 0; x < tag_list.length; x++ ) {
         if ( tag_list[ x ].indexOf( tag ) != -1 ) {
-          var attrs = split[ 1 ].replace( '}', '' ).trim().split( ';' );
+          attrs = split[ 1 ].replace( '}', '' ).trim().split( ';' );
           var tag_name = tag_list[ x ].trim().replace( ',', '' );
           if ( output[ 'tag' ][ tag_name ] == null ) {
             output[ 'tag' ][ tag_name ] = {};
           }
-          for ( var b = 0; b < attrs.length; b++ ) {
-            var attr_split = attrs[ b ].split( ':' );
+          for ( b = 0; b < attrs.length; b++ ) {
+            attr_split = attrs[ b ].split( ':' );
             if ( attr_split[ 0 ] != null && attr_split[ 1 ] != null ) {
               output[ 'tag' ][ tag_name ][ attr_split[ 0 ].trim() ] = attr_split[ 1 ].trim();
             }
@@ -86,6 +106,21 @@ function parse( element ) {
     }
   } else {
     output[ 'tag' ][ tag ] = '';
+  }
+  for ( var c in output[ 'class' ] ) {
+    for ( var attribute in output[ 'class' ][ c ] ) {
+      output[ 'attr' ][ attribute ] = output[ 'class' ][ c ][ attribute ];
+    }
+  }
+  for ( c in output[ 'id' ] ) {
+    for ( attribute in output[ 'id' ][ c ] ) {
+      output[ 'attr' ][ attribute ] = output[ 'id' ][ c ][ attribute ];
+    }
+  }
+  for ( c in output[ 'tag' ] ) {
+    for ( attribute in output[ 'tag' ][ c ] ) {
+      output[ 'attr' ][ attribute ] = output[ 'tag' ][ c ][ attribute ];
+    }
   }
   return output;
 }
