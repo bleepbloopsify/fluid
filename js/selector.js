@@ -4,24 +4,39 @@ document.body.style.cursor = 'pointer';
 var selected;
 var color;
 
-for (var x = 0; x < elements.length; x++) {
-  elements[x].addEventListener('mouseover', function(e) {
-    e.preventDefault();
-    if (this.parentNode == selected || selected == null) {
-      if (selected != null) {
-        selected.style.backgroundColor = color;
-        selected.removeEventListener(select_out);
-      }
-      selected = this;
-      color = selected.style.backgroundColor;
-      color = color == '' ? 'transparent' : color;
-      selected.style.backgroundColor = 'lightblue';
-      selected.addEventListener('mouseout', select_out);
+var hover = function(e) {
+  e.preventDefault();
+  if (this.parentNode == selected || selected == null) {
+    if (selected != null) {
+      selected.style.backgroundColor = color;
+      selected.removeEventListener(select_out);
     }
+    selected = this;
+    color = selected.style.backgroundColor;
+    color = color == '' ? 'inherit' : color;
+    selected.style.backgroundColor = 'lightblue';
+    selected.addEventListener('mouseout', select_out);
+  }
+};
+
+function mouseOver(e) {
+  for (var x = 0; x < elements.length; x++) {
+    elements[x].addEventListener('mouseover', hover);
+  }
+
+  $('fluid').each(function() {
+    this.removeEventListener('mouseover', hover);
   });
+
+  document.addEventListener('click', select_click);
 }
 
-document.addEventListener('click', select_click);
+function removeMouseOver(e) {
+  for (var x = 0; x < elements.length; x++) {
+    elements[x].removeEventListener('mouseover', hover);
+  }
+  document.removeEventListener('click', select_click);
+}
 
 function parse(element) {
   var output = { 'tags': {}, 'classes': {}, 'ids': {}, 'attrs': {} };
@@ -32,7 +47,7 @@ function parse(element) {
       for (var a = 0; a < style_list.length; a++) {
         var style = style_list[a]['styleDefinition'];
         var split = style.split('{');
-        var class_list = split[0].split(' ');
+        var class_list = split[0].trim().split(' ');
         for (var x = 0; x < class_list.length; x++) {
           if (class_list[x].indexOf(classes[i]) != -1) {
             var class_name = class_list[x].trim().replace(',', '');
@@ -60,7 +75,7 @@ function parse(element) {
       for (a = 0; a < style_list.length; a++) {
         style = style_list[a]['styleDefinition'];
         split = style.split('{');
-        var id_list = split[0].split(' ');
+        var id_list = split[0].trim().split(' ');
         for (x = 0; x < id_list.length; x++) {
           if (id_list[x].indexOf(id[i]) != -1) {
             var id_name = id_list[x].trim().replace(',', '');
@@ -87,7 +102,7 @@ function parse(element) {
     for (a = 0; a < style_list.length; a++) {
       style = style_list[a]['styleDefinition'];
       split = style.split('{');
-      var tag_list = split[0].split(' ');
+      var tag_list = split[0].trim().split(' ');
       for (x = 0; x < tag_list.length; x++) {
         if (tag_list[x].indexOf(tag) != -1) {
           attrs = split[1].replace('}', '').trim().split(';');

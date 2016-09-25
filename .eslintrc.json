@@ -5,7 +5,8 @@
     },
     "globals":{
       "chrome":true,
-      "$":true
+      "$":true,
+      "settings":true
     },
     "extends": "eslint:recommended",
     "parserOptions": {

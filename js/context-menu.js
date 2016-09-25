@@ -1,39 +1,30 @@
-console.log('hi');
 var url = window.location.hostname + window.location.pathname;
-var settings = chrome.storage.sync[url];
-console.log(chrome.storage);
+var settings;
+chrome.storage.sync.clear(function() {
+  chrome.storage.sync.get(url, function(items) {
+    settings = {};
+    settings.ids = items.ids || {};
+    settings.tags = items.tags || {};
+    settings.classes = items.classes || {};
+    settings.tree = items.tree || {};
+
+    stylePage();
+  });
+});
+
+console.log(settings);
 
 var element = document;
 
 var dialog;
 
+var stylePage;
 var methods = {};
 var parse;
 
 methods.open_dialog = function() {
   let parsed = parse(element);
   console.log(parsed);
-  // let parsed = {
-  //   'ids': {
-  //     lol: {
-  //       'color': 'red'
-  //     }
-  //   },
-  //   'classes': {
-  //     lmao: {
-  //       'color': 'red'
-  //     },
-  //     lmaos: {
-  //       'color': 'blue'
-  //     },
-  //     lmaoa: {
-  //       'color': 'green'
-  //     }
-  //   },
-  //   'attrs': {
-  //     'color': 'red'
-  //   }
-  // };
 
   var toggle = function(toggleme) {
     return function(e) {
@@ -44,7 +35,7 @@ methods.open_dialog = function() {
   let settings = $('<fluid id="fluid-settings" />');
   let source = $('<fluid id="fluid-source" />');
   let container = $('<fluid />');
-  let classes = $('<fluid id="fluid-classes" />');
+  let classes = $('<fluid class="fluid-classes" />');
   let class_title = $('<label> Classes </label>');
   let classes_container = $('<fluid />');
   class_title.click(toggle(classes_container));
@@ -74,7 +65,7 @@ methods.open_dialog = function() {
 
   dialog.append(classes);
 
-  let ids = $('<fluid id="fluid-ids" />');
+  let ids = $('<fluid class="fluid-ids" />');
   let id_title = $('<label> Ids </label>');
   let ids_container = $('<fluid />');
   id_title.click(toggle(ids_container));
@@ -121,17 +112,20 @@ methods.open_dialog = function() {
   save_button.click(save);
   dialog.append(save_button);
 
-  dialog.dialog({
+  let box = dialog.dialog({
     height: $(window).height(),
+    dialogClass: 'fluid-dialog-box',
     position: {
       my: 'right center',
       at: 'right center',
       of: window
     }
   });
+  console.log(box);
 };
 
 var save = function() {
+  console.log(settings);
   let dialog_settings = dialog.children('#settings');
   let classes = dialog_settings.children('.fluid-classes').get().map(retrieveValues);
   let ids = dialog_settings.children('.fluid-ids').get().map(retrieveValues);
@@ -151,7 +145,10 @@ var save = function() {
   }
   let path = JSON.stringify(getPath());
   settings.tree[path] = attrs;
-
+  console.log(settings);
+  // chrome.storage.sync.set({ url: settings }, function(err) {
+  //   if (err) console.error(err);
+  // });
 };
 
 var getPath = function() {
@@ -159,14 +156,16 @@ var getPath = function() {
   let curr = element;
   while (curr.parentNode) {
     let parent = curr.parentNode;
-    path.append(parent.indexOf(curr));
+    var index = Array.prototype.indexOf.call(parent.children, curr);
+    path.push(index);
     curr = parent;
   }
   return path;
 };
 
 var retrieveValues = function(el) {
-  let children = el.children;
+  console.log(el);
+  let children = el.children[1].children;
   let retrieve = {};
   for (let childindex in children) {
     let child = children[childindex];
