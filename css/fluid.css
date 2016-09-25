@@ -2,8 +2,33 @@ fluid {
   display:block;
 }
 
-.fluid-dialog-box{
+fluid.fluid-dialog-box {
   z-index: 2000;
   position:fixed;
   right:0px;
+}
+
+fluid.fluid-property {
+  display: flex;
+}
+
+.fluid-name {
+  flex-grow: 1;
+}
+
+.fluid-value {
+  flex-grow: 1;
+}
+
+.fluid-save {
+  width: 100px;
+  height: 30px;
+  border: 0;
+  margin-top: 20px;
+  background-color: rgb(75, 163, 64);
+  color: white
+}
+
+.fluid-title {
+  font-size: 16px;
 }
