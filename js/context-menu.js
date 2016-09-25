@@ -1,6 +1,7 @@
 console.log('hi');
 var url = window.location.hostname + window.location.pathname;
 var settings = chrome.storage.sync[url];
+console.log(chrome.storage);
 
 var element = document;
 
@@ -9,32 +10,29 @@ var dialog;
 var methods = {};
 var parse;
 
-methods.open_dialog = function(req, el) {
-  // dialog.id = req.id;
-  let html = req.html;
-  // let parsed = parse(element);
-
-  let parsed = {
-    'ids': {
-      lol: {
-        'color': 'red'
-      }
-    },
-    'classes': {
-      lmao: {
-        'color': 'red'
-      },
-      lmaos: {
-        'color': 'blue'
-      },
-      lmaoa: {
-        'color': 'green'
-      }
-    },
-    'attrs': {
-      'color': 'red'
-    }
-  };
+methods.open_dialog = function() {
+  let parsed = parse(element);
+  // let parsed = {
+  //   'ids': {
+  //     lol: {
+  //       'color': 'red'
+  //     }
+  //   },
+  //   'classes': {
+  //     lmao: {
+  //       'color': 'red'
+  //     },
+  //     lmaos: {
+  //       'color': 'blue'
+  //     },
+  //     lmaoa: {
+  //       'color': 'green'
+  //     }
+  //   },
+  //   'attrs': {
+  //     'color': 'red'
+  //   }
+  // };
 
   var toggle = function(toggleme) {
     return function(e) {
@@ -116,8 +114,12 @@ methods.open_dialog = function(req, el) {
     attrs_container.append(property_container);
   }
   attrs.append(attrs_container);
-
   dialog.append(attrs);
+
+  let save_button = $('<button> Save </button>');
+  save_button.click(save);
+  dialog.append(save_button);
+
   dialog.dialog({
     height: $(window).height(),
     position: {
@@ -128,19 +130,11 @@ methods.open_dialog = function(req, el) {
   });
 };
 
-methods.save_classes = function(req) {
-
-  console.log(req);
-  if (req.classes) {
-    settings.classes = req.classes;
-  }
-};
-
 var save = function() {
-  let dialog_settings = dialog.getElementById('settings');
-  let classes = dialog_settings.getElementById('classes').map(retrieveValues);
-  let ids = dialog_settings.getElementById('ids').map(retrieveValues);
-  let attrs = retrieveValues(dialog.getElementById('attributes'));
+  let dialog_settings = dialog.children('#settings');
+  let classes = dialog_settings.children('.fluid-classes').get().map(retrieveValues);
+  let ids = dialog_settings.children('.fluid-ids').get().map(retrieveValues);
+  let attrs = retrieveValues(dialog.children('.fluid-attrs'));
 
   for (let index in classes) {
     let class_properties = classes[index];
@@ -156,6 +150,7 @@ var save = function() {
   }
   let path = JSON.stringify(getPath());
   settings.tree[path] = attrs;
+
 };
 
 var getPath = function() {
@@ -174,23 +169,16 @@ var retrieveValues = function(el) {
   let retrieve = {};
   for (let childindex in children) {
     let child = children[childindex];
-    let name = child.getElementsByClassName('name')[0].value;
-    let value = child.getElementsByClassName('value')[0].value;
+    let name = child.getElementsByClassName('fluid-name')[0].value;
+    let value = child.getElementsByClassName('fluid-value')[0].value;
     retrieve[name] = value;
   }
 };
 
-chrome.runtime.onMessage.addListener(function(req, sender, sendResponse) {
-  console.log('hi');
-  console.log(req, sender);
-  console.log(element);
-
+chrome.runtime.onMessage.addListener(function(req) {
   let method = req.method;
   delete req.method;
-  if (!method) sendResponse('No method found');
-  else methods[method](req, element);
-
-  sendResponse('Received');
+  methods[method](req, element);
 });
 
 // console.log(document);
