@@ -1,7 +1,7 @@
-console.log( 'working' );
+console.log('working');
 
-if ( url in settings ) {
-  for key, value in settings[ url ] {
+if (url in settings) {
+  for key, value in settings[url] {
     for element in value {
 
     }
