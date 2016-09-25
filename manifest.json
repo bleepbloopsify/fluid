@@ -4,15 +4,16 @@
   "version":"1.0.0",
   "description":"",
   "permissions":[
+    "storage",
     "contextMenus"
   ],
   "background":{
-    "scripts":["js/context-menu.js"]
+    "scripts":["background/context-menu.js"]
   },
   "content_scripts":[
     {
       "matches":["<all_urls>"],
-      "js":["js/fluid.js"]
+      "js":["js/context-menu.js", "js/fluid.js"]
     }
   ]
 }

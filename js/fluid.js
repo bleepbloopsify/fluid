@@ -1,11 +1,13 @@
-console.log( 'working' );
+console.log('working');
+
+console.log(chrome);
 
 var settings = {
   'www.reddit.com/r/all': {
-    'tree': [ {
+    'tree': [{
       'path': [],
       'properties': { 'background-color': 'purple' }
-    } ],
+    }],
     'id': {},
     'class': {
       'title': { 'color': 'red' }
@@ -17,39 +19,39 @@ var settings = {
 };
 
 var url = window.location.hostname + window.location.pathname;
-console.log( url );
+console.log(url);
 
-function styleElement( element, styles ) {
-  for ( var attr in styles ) {
-    element.style.cssText = attr + ': ' + styles[ attr ];
+function styleElement(element, styles) {
+  for (var attr in styles) {
+    element.style.cssText = attr + ': ' + styles[attr];
   }
 }
 
-if ( url in settings ) {
-  var id = settings[ url ][ 'id' ];
-  var class_name = settings[ url ][ 'class' ];
-  var tag = settings[ url ][ 'tag' ];
-  var tree = settings[ url ][ 'tree' ];
-  for ( var name in id ) {
-    styleElement( document.getElementById( name ), id[ name ] );
+if (url in settings) {
+  var id = settings[url]['id'];
+  var class_name = settings[url]['class'];
+  var tag = settings[url]['tag'];
+  var tree = settings[url]['tree'];
+  for (var name in id) {
+    styleElement(document.getElementById(name), id[name]);
   }
-  for ( name in class_name ) {
-    var elements = document.getElementsByClassName( name );
-    for ( var x = 0; x < elements.length; x++ ) {
-      styleElement( elements[ x ], class_name[ name ] );
+  for (name in class_name) {
+    var elements = document.getElementsByClassName(name);
+    for (var x = 0; x < elements.length; x++) {
+      styleElement(elements[x], class_name[name]);
     }
   }
-  for ( name in tag ) {
-    elements = document.getElementsByTagName( name );
-    for ( x = 0; x < elements.length; x++ ) {
-      styleElement( elements[ x ], tag[ name ] );
+  for (name in tag) {
+    elements = document.getElementsByTagName(name);
+    for (x = 0; x < elements.length; x++) {
+      styleElement(elements[x], tag[name]);
     }
   }
-  for ( name in tree ) {
+  for (name in tree) {
     var curr = document;
-    for ( var path in tree[ name ][ 'path' ] ) {
-      curr = curr.children()[ path ];
+    for (var path in tree[name]['path']) {
+      curr = curr.children()[path];
     }
-    styleElement( curr, tree[ name ][ 'properties' ] );
+    styleElement(curr, tree[name]['properties']);
   }
 }
