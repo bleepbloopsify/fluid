@@ -13,7 +13,7 @@ var hover = function(e) {
     }
     selected = this;
     color = selected.style.backgroundColor;
-    color = color == '' ? 'inherit' : color;
+    color = color == '' ? '' : color;
     selected.style.backgroundColor = 'lightblue';
     selected.addEventListener('mouseout', select_out);
   }
