@@ -1,5 +1,7 @@
 console.log( 'working' );
 
+console.log( chrome );
+
 var settings = {
   'www.reddit.com/r/all': {
     'tree': [ {

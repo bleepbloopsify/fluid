@@ -1,36 +1,6 @@
 var elements = document.getElementsByTagName( '*' );
 document.body.style.cursor = 'pointer';
 
-// var selected = [];
-//
-// for ( var x = 0; x < elements.length; x++ ) {
-//   elements[ x ].addEventListener( 'mouseover', function( e ) {
-//     e.preventDefault();
-//     for ( var x = 1; x < selected.length; x++ ) {
-//       var element = selected[ x ][ 'element' ];
-//       element.style.backgroundColor = selected[ x ][ 'color' ];
-//     }
-//     var color = this.style.backgroundColor;
-//     color = color == '' ? 'white' : color;
-//     selected.push( { 'element': this, 'color': color } );
-//     selected[ 0 ][ 'element' ].addEventListener( 'click', function( e ) {
-//       e.preventDefault();
-//       console.log( this );
-//     } );
-//     this.style.backgroundColor = 'lightblue';
-//     this.addEventListener( 'mouseout', function( e ) {
-//       e.preventDefault();
-//       for ( var i = 0; i < selected.length; i++ ) {
-//         if ( selected[ i ][ 'element' ] == this ) {
-//           this.style.backgroundColor = selected[ i ][ 'color' ];
-//           selected.splice( i, 1 );
-//           break;
-//         }
-//       }
-//     } );
-//   } );
-// }
-
 var selected;
 var color;
 
@@ -44,7 +14,7 @@ for ( var x = 0; x < elements.length; x++ ) {
       }
       selected = this;
       color = selected.style.backgroundColor;
-      color = color == '' ? 'white' : color;
+      color = color == '' ? 'transparent' : color;
       selected.style.backgroundColor = 'lightblue';
       selected.addEventListener( 'mouseout', select_out );
     }
