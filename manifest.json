@@ -6,9 +6,6 @@
   "permissions":[
     "contextMenus"
   ],
-  "background":{
-    "scripts":["js/context-menu.js"]
-  },
   "content_scripts":[
     {
       "matches":["<all_urls>"],
